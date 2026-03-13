@@ -1,28 +1,13 @@
-import { supabase } from "./supabase";
+import { supabaseAdmin } from "./supabase-server";
 
 export async function getRecentMemories(userId: string): Promise<string[]> {
-  if (!supabase) return [];
-
-  const { data } = await supabase
-    .from("memories")
-    .select("content")
+  const { data } = await supabaseAdmin
+    .from("check_ins")
+    .select("memory, created_at")
     .eq("user_id", userId)
+    .neq("memory", "")
     .order("created_at", { ascending: false })
     .limit(5);
 
-  return data?.map((m) => m.content) || [];
-}
-
-export async function saveMemory(
-  userId: string,
-  content: string,
-  sourceCheckinId: string
-): Promise<void> {
-  if (!supabase) return;
-
-  await supabase.from("memories").insert({
-    user_id: userId,
-    content,
-    source_checkin_id: sourceCheckinId,
-  });
+  return data?.map((c) => c.memory) || [];
 }

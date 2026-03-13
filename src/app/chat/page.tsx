@@ -6,6 +6,7 @@ import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { MoodScoreSlider } from "@/components/MoodScoreSlider";
 import { MicroActionCard } from "@/components/MicroActionCard";
+import { useAuth } from "@/components/AuthProvider";
 import type { CheckInEndData } from "@/types";
 
 interface DisplayMessage {
@@ -39,6 +40,7 @@ const TRIGGER_MSG = { role: "user" as const, content: "（用户打开了签到�
 
 export default function ChatPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showScoring, setShowScoring] = useState(false);
@@ -64,8 +66,8 @@ export default function ChatPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: apiMessages.map((m) => ({ role: m.role, content: m.content })),
-          userId: null,
-          userName: "",
+          userId: user?.id || null,
+          userName: user?.user_metadata?.full_name || "",
         }),
       });
 
@@ -154,10 +156,34 @@ export default function ChatPage() {
     streamAIResponse(apiMessages);
   };
 
-  const handleScoreConfirm = (score: number) => {
+  const handleScoreConfirm = async (score: number) => {
     setConfirmedScore(score);
     setScored(true);
     setShowScoring(false);
+
+    // Save check-in to Supabase
+    if (user && checkInData) {
+      try {
+        const conversation = messages
+          .filter((m) => m.content)
+          .map((m) => ({ role: m.role, content: m.content }));
+
+        await fetch("/api/checkin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id,
+            score,
+            summary: checkInData.summary,
+            action: checkInData.action,
+            memory: checkInData.memory,
+            conversation,
+          }),
+        });
+      } catch (err) {
+        console.error("Failed to save check-in:", err);
+      }
+    }
 
     const followUp: DisplayMessage = {
       role: "assistant",
