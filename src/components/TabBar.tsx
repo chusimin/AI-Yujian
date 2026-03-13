@@ -40,8 +40,8 @@ export function TabBar() {
   const pathname = usePathname();
   const { user } = useAuth();
 
-  // Don't show tab bar if not logged in
-  if (!user) return null;
+  // Don't show tab bar if not logged in or on /about page
+  if (!user || pathname === "/about") return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[var(--yj-bg-secondary)] border-t border-[var(--yj-divider)] safe-area-bottom">
