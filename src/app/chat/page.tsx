@@ -198,17 +198,11 @@ export default function ChatPage() {
   const isStreamingEmpty = isLoading && lastMsg?.role === "assistant" && !lastMsg.content;
 
   return (
-    <div className="flex flex-col h-screen bg-[var(--yj-bg-primary)]">
+    <div className="flex flex-col h-screen bg-[var(--yj-bg-primary)] pb-14">
       {/* Header */}
       <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--yj-divider)] bg-[var(--yj-bg-secondary)]">
-        <button
-          onClick={() => router.push("/")}
-          className="text-[var(--yj-text-secondary)] hover:text-[var(--yj-text-primary)] transition-colors text-sm"
-        >
-          ← 返回
-        </button>
         <h1 className="text-base font-medium text-[var(--yj-text-primary)]">
-          今日签到
+          {scored ? "对话" : "今日签到"}
         </h1>
         {confirmedScore !== null ? (
           <span className="ml-auto text-xs text-[var(--yj-success)] font-medium">

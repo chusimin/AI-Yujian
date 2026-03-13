@@ -33,3 +33,11 @@ export interface CheckInEndData {
   action: string;
   memory: string;
 }
+
+export interface UserProfile {
+  id: string;
+  nickname: string;
+  occupation: string;
+  mbti: string;
+  zodiac: string;
+}

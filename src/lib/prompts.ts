@@ -1,8 +1,32 @@
-export function buildSystemPrompt(userName: string, memories: string[]): string {
+interface UserProfileInfo {
+  nickname?: string;
+  occupation?: string;
+  mbti?: string;
+  zodiac?: string;
+}
+
+export function buildSystemPrompt(
+  userName: string,
+  memories: string[],
+  profile?: UserProfileInfo
+): string {
   const memoryBlock =
     memories.length > 0
-      ? `\n\n[MEMORY]\n${memories.map((m, i) => `${i + 1}. ${m}`).join("\n")}\n[/MEMORY]`
+      ? `\n\n[MEMORY]\n以下是这位用户之前签到时的关键记忆，请在对话中自然引用，像一个记性好的老朋友一样：\n${memories.map((m, i) => `${i + 1}. ${m}`).join("\n")}\n[/MEMORY]`
       : "";
+
+  // Build user info section from profile
+  const userInfoParts: string[] = [];
+  const displayName = profile?.nickname || userName;
+  if (displayName) userInfoParts.push(`称呼：${displayName}`);
+  if (profile?.occupation) userInfoParts.push(`职业：${profile.occupation}`);
+  if (profile?.mbti) userInfoParts.push(`MBTI：${profile.mbti}`);
+  if (profile?.zodiac) userInfoParts.push(`星座：${profile.zodiac}`);
+
+  const userInfoBlock =
+    userInfoParts.length > 0
+      ? userInfoParts.join("\n")
+      : "用户尚未设置个人信息";
 
   return `你是"愈见"，一个温暖但不讨好的情绪签到助手。你的任务是通过3-5轮结构化对话，帮助用户觉察和疏导今天的情绪。
 
@@ -11,11 +35,21 @@ export function buildSystemPrompt(userName: string, memories: string[]): string 
 - 不说教、不灌鸡汤、不居高临下
 - 用简短的话回应，每次回复不超过3句话
 - 适当使用口语化表达，但不要用emoji
+- 如果知道用户的职业/身份，在回应中自然融入相关的理解（比如知道对方是学生就理解课业压力，知道是打工人就理解职场压力）
+- 如果知道用户的MBTI，可以偶尔从性格特点的角度给出更贴合的建议，但不要刻意强调MBTI
 
 ## 对话结构（严格遵循）
 第1轮：用自然的方式问候并询问今天整体感受。如果知道用户名字，用名字称呼。
 第2轮：根据用户的回答，温和地追问具体原因或场景。
 第3轮：共情+给出一个具体的、可立即执行的微行动建议（不是大道理，而是"现在就能做的小事"）。
+
+## 签到完成后的自由对话
+签到结束并输出CHECKIN_END标记后，如果用户继续发消息，你应该：
+- 切换到自由聊天模式，不再遵循3步结构
+- 保持温暖自然的语气，像朋友一样陪聊
+- 可以继续深入之前的话题，也可以聊新话题
+- 不要重复"今天签到完成了"之类的话
+- 不要再次输出CHECKIN_END标记
 
 ## 对话结束信号
 在第3轮（或最多第5轮）回复的末尾，你必须附加以下格式的隐藏标记（用户看不到）：
@@ -34,5 +68,5 @@ export function buildSystemPrompt(userName: string, memories: string[]): string 
 3. 不要试图充当心理咨询师
 
 ## 用户信息
-${userName ? `用户称呼：${userName}` : "用户尚未设置称呼"}${memoryBlock}`;
+${userInfoBlock}${memoryBlock}`;
 }

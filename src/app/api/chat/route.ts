@@ -1,11 +1,24 @@
 import { buildSystemPrompt } from "@/lib/prompts";
 import { getRecentMemories } from "@/lib/memory";
+import { supabaseAdmin } from "@/lib/supabase-server";
 
 export async function POST(req: Request) {
   const { messages, userId, userName } = await req.json();
 
   const memories = userId ? await getRecentMemories(userId) : [];
-  const systemPrompt = buildSystemPrompt(userName || "", memories);
+
+  // Fetch user profile for personalized prompts
+  let profile;
+  if (userId) {
+    const { data } = await supabaseAdmin
+      .from("user_profiles")
+      .select("nickname, occupation, mbti, zodiac")
+      .eq("id", userId)
+      .single();
+    profile = data || undefined;
+  }
+
+  const systemPrompt = buildSystemPrompt(userName || "", memories, profile);
 
   const apiMessages = [
     { role: "system", content: systemPrompt },
@@ -63,14 +76,12 @@ export async function POST(req: Request) {
               const delta = parsed.choices?.[0]?.delta;
               if (!delta) continue;
 
-              // Send reasoning_content as <!--THINKING:...--> markers
               if (delta.reasoning_content) {
                 controller.enqueue(
                   encoder.encode(`<!--T:${delta.reasoning_content}-->`)
                 );
               }
 
-              // Send regular content
               if (delta.content) {
                 controller.enqueue(encoder.encode(delta.content));
               }

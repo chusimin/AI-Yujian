@@ -9,7 +9,7 @@ import { supabase } from "@/lib/supabase";
 import type { MoodDataPoint, CheckIn } from "@/types";
 
 export default function Home() {
-  const { user, loading: authLoading, signInWithGoogle, signOut } = useAuth();
+  const { user, loading: authLoading, signInWithGoogle } = useAuth();
   const [period, setPeriod] = useState<"7d" | "30d">("7d");
   const [moodData, setMoodData] = useState<MoodDataPoint[]>([]);
   const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
@@ -123,24 +123,16 @@ export default function Home() {
 
   // Logged in
   return (
-    <div className="min-h-screen bg-[var(--yj-bg-primary)]">
+    <div className="min-h-screen bg-[var(--yj-bg-primary)] pb-20">
       <div className="mx-auto max-w-md px-5 py-10">
         {/* Header */}
-        <div className="mb-8 flex items-start justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-[var(--yj-text-primary)]">
-              愈见
-            </h1>
-            <p className="text-sm text-[var(--yj-text-secondary)] mt-1">
-              每天3分钟，看见情绪的轨迹
-            </p>
-          </div>
-          <button
-            onClick={signOut}
-            className="text-xs text-[var(--yj-text-muted)] hover:text-[var(--yj-text-secondary)] transition-colors mt-1"
-          >
-            退出
-          </button>
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-[var(--yj-text-primary)]">
+            愈见
+          </h1>
+          <p className="text-sm text-[var(--yj-text-secondary)] mt-1">
+            每天3分钟，看见情绪的轨迹
+          </p>
         </div>
 
         {dataLoading ? (
