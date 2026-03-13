@@ -47,73 +47,57 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ===== 愈见 Design Tokens — 沙丘日落 ===== */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* shadcn theme overrides */
+  --background: #F8F4EE;
+  --foreground: #3A3028;
+  --card: #FFFCF7;
+  --card-foreground: #3A3028;
+  --popover: #FFFCF7;
+  --popover-foreground: #3A3028;
+  --primary: #A68A6B;
+  --primary-foreground: #FFFCF7;
+  --secondary: #F0E8DD;
+  --secondary-foreground: #3A3028;
+  --muted: #F0EBE3;
+  --muted-foreground: #998C7C;
+  --accent: #D98E73;
+  --accent-foreground: #FFFCF7;
+  --destructive: #C27264;
+  --border: #E5DDD2;
+  --input: #F0EBE3;
+  --ring: #A68A6B;
+  --radius: 0.5rem;
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.809 0.105 251.813);
-  --chart-2: oklch(0.623 0.214 259.815);
-  --chart-3: oklch(0.546 0.245 262.881);
-  --chart-4: oklch(0.488 0.243 264.376);
-  --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* 愈见 custom tokens */
+  --yj-primary: #A68A6B;
+  --yj-primary-hover: #957B5E;
+  --yj-primary-light: #F0E8DD;
+  --yj-secondary: #C9B99A;
+  --yj-accent: #D98E73;
+  --yj-success: #7EAA82;
+  --yj-warning: #D4A86A;
+  --yj-error: #C27264;
+  --yj-info: #8BA5A0;
+  --yj-bg-primary: #F8F4EE;
+  --yj-bg-secondary: #FFFCF7;
+  --yj-bg-tertiary: #F0EBE3;
+  --yj-text-primary: #3A3028;
+  --yj-text-secondary: #998C7C;
+  --yj-text-muted: #B8AD9E;
+  --yj-border: #E5DDD2;
+  --yj-divider: #EDE7DD;
+
+  /* shadows */
+  --yj-shadow-sm: 0 1px 3px rgba(166, 138, 107, 0.04);
+  --yj-shadow-md: 0 4px 12px rgba(166, 138, 107, 0.06);
+  --yj-shadow-lg: 0 8px 24px rgba(166, 138, 107, 0.08);
+
+  /* transitions */
+  --yj-transition-fast: 150ms ease;
+  --yj-transition-base: 250ms ease;
+  --yj-transition-slow: 350ms ease;
 }
 
 @layer base {
@@ -122,6 +106,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Noto Sans SC', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   }
   html {
     @apply font-sans;

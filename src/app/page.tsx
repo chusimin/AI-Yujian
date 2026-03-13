@@ -1,65 +1,80 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { MoodChart } from "@/components/MoodChart";
+import { CheckInButton } from "@/components/CheckInButton";
+import { RecentCheckIns } from "@/components/RecentCheckIns";
+import type { MoodDataPoint, CheckIn } from "@/types";
+
+// Mock data for visual preview
+const today = new Date();
+const mockMoodData: MoodDataPoint[] = Array.from({ length: 7 }, (_, i) => {
+  const d = new Date(today);
+  d.setDate(d.getDate() - (6 - i));
+  const scores = [3, 2, 3, 4, 3, 4, 5];
+  const summaries = [
+    "课业压力有点大",
+    "和室友闹了点小矛盾",
+    "普通的一天",
+    "和朋友吃了顿好的",
+    "论文进度有点卡",
+    "跑步之后感觉好多了",
+    "今天状态不错",
+  ];
+  return {
+    date: d.toISOString(),
+    score: scores[i],
+    summary: summaries[i],
+  };
+});
+
+// Mock check-ins spread across the month for calendar view
+const mockCheckIns: CheckIn[] = [
+  { id: "1", user_id: "mock", score: 5, summary: "今天状态不错，完成了一个小目标", action: "给自己泡杯茶，庆祝一下", messages: [], created_at: new Date().toISOString() },
+  { id: "2", user_id: "mock", score: 4, summary: "跑步之后感觉好多了", action: "拉伸5分钟", messages: [], created_at: new Date(Date.now() - 86400000).toISOString() },
+  { id: "3", user_id: "mock", score: 3, summary: "论文进度有点卡", action: "先写10分钟", messages: [], created_at: new Date(Date.now() - 86400000 * 2).toISOString() },
+  { id: "4", user_id: "mock", score: 4, summary: "和朋友吃了顿好的", action: "给朋友发个感谢消息", messages: [], created_at: new Date(Date.now() - 86400000 * 3).toISOString() },
+  { id: "5", user_id: "mock", score: 3, summary: "普通的一天", action: "听一首喜欢的歌", messages: [], created_at: new Date(Date.now() - 86400000 * 4).toISOString() },
+  { id: "6", user_id: "mock", score: 2, summary: "和室友闹了点小矛盾", action: "写下你的感受，不发出去也行", messages: [], created_at: new Date(Date.now() - 86400000 * 5).toISOString() },
+  { id: "7", user_id: "mock", score: 3, summary: "课业压力有点大", action: "去楼下散步10分钟", messages: [], created_at: new Date(Date.now() - 86400000 * 6).toISOString() },
+  { id: "8", user_id: "mock", score: 4, summary: "看了一部好电影", action: "把感受写下来", messages: [], created_at: new Date(Date.now() - 86400000 * 8).toISOString() },
+  { id: "9", user_id: "mock", score: 1, summary: "考试考砸了，很难过", action: "允许自己难过一会儿", messages: [], created_at: new Date(Date.now() - 86400000 * 10).toISOString() },
+  { id: "10", user_id: "mock", score: 5, summary: "收到了实习offer！", action: "和家人分享这个好消息", messages: [], created_at: new Date(Date.now() - 86400000 * 12).toISOString() },
+];
 
 export default function Home() {
+  const [period, setPeriod] = useState<"7d" | "30d">("7d");
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-[var(--yj-bg-primary)]">
+      <div className="mx-auto max-w-md px-5 py-10">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-[var(--yj-text-primary)]">
+            愈见
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-sm text-[var(--yj-text-secondary)] mt-1">
+            每天3分钟，看见情绪的轨迹
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Mood Chart */}
+        <div className="mb-6">
+          <MoodChart
+            data={mockMoodData}
+            period={period}
+            onPeriodChange={setPeriod}
+          />
         </div>
-      </main>
+
+        {/* Check-in Button */}
+        <div className="mb-8">
+          <CheckInButton hasCheckedInToday={false} />
+        </div>
+
+        {/* Calendar */}
+        <RecentCheckIns checkIns={mockCheckIns} />
+      </div>
     </div>
   );
 }
