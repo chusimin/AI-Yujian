@@ -26,14 +26,16 @@ export function ChatMessage({
   // During streaming with no content yet, show thinking indicator
   if (role === "assistant" && !displayContent && isStreaming) {
     return (
-      <div className="flex justify-start mb-4">
+      <div className="flex justify-start mb-4 yj-msg-enter">
         <div className="max-w-[80%] bg-[var(--yj-bg-secondary)] border border-[var(--yj-border)] rounded-[4px_20px_20px_20px] px-5 py-4 shadow-[var(--yj-shadow-sm)]">
           {thinking ? (
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-[var(--yj-accent)] animate-pulse" />
+                <div className="yj-thinking-dots">
+                  <span /><span /><span />
+                </div>
                 <span className="text-xs text-[var(--yj-text-muted)]">
-                  正在思考...
+                  思考中
                 </span>
               </div>
               <p className="text-xs text-[var(--yj-text-muted)] leading-relaxed line-clamp-3 italic">
@@ -41,9 +43,14 @@ export function ChatMessage({
               </p>
             </div>
           ) : (
-            <span className="text-sm text-[var(--yj-text-muted)] animate-pulse">
-              正在思考...
-            </span>
+            <div className="flex items-center gap-2">
+              <div className="yj-thinking-dots">
+                <span /><span /><span />
+              </div>
+              <span className="text-xs text-[var(--yj-text-muted)]">
+                思考中
+              </span>
+            </div>
           )}
         </div>
       </div>
@@ -54,11 +61,11 @@ export function ChatMessage({
 
   return (
     <div
-      className={`flex ${role === "user" ? "justify-end" : "justify-start"} mb-4`}
+      className={`flex ${role === "user" ? "justify-end" : "justify-start"} mb-4 ${isStreaming ? "" : "yj-msg-enter"}`}
     >
       <div className="max-w-[80%]">
         <div
-          className={`px-5 py-4 text-sm leading-relaxed ${
+          className={`px-5 py-4 text-sm leading-relaxed whitespace-pre-wrap ${
             role === "user"
               ? "bg-[var(--yj-primary)] text-[#FFFCF7] rounded-[20px_4px_20px_20px]"
               : "bg-[var(--yj-bg-secondary)] text-[var(--yj-text-primary)] border border-[var(--yj-border)] rounded-[4px_20px_20px_20px] shadow-[var(--yj-shadow-sm)]"
@@ -71,13 +78,13 @@ export function ChatMessage({
         {role === "assistant" && thinking && !isStreaming && (
           <button
             onClick={() => setShowThinking(!showThinking)}
-            className="mt-1 ml-1 text-xs text-[var(--yj-text-muted)] hover:text-[var(--yj-text-secondary)] transition-colors"
+            className="mt-1.5 ml-1 text-xs text-[var(--yj-text-muted)] hover:text-[var(--yj-text-secondary)] transition-colors"
           >
             {showThinking ? "收起思考过程 ▴" : "查看思考过程 ▾"}
           </button>
         )}
         {showThinking && thinking && (
-          <div className="mt-1 ml-1 p-3 rounded-lg bg-[var(--yj-bg-tertiary)] text-xs text-[var(--yj-text-muted)] leading-relaxed max-h-32 overflow-y-auto">
+          <div className="mt-1 ml-1 p-3 rounded-lg bg-[var(--yj-bg-tertiary)] text-xs text-[var(--yj-text-muted)] leading-relaxed max-h-32 overflow-y-auto yj-expand-enter">
             {thinking}
           </div>
         )}

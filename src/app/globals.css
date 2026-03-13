@@ -117,3 +117,83 @@
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ===== 愈见 Animations ===== */
+
+/* Message fade-in-up */
+@keyframes yj-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.yj-msg-enter {
+  animation: yj-fade-in-up 0.3s ease-out both;
+}
+
+/* Thinking dots bounce */
+@keyframes yj-dot-bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-4px);
+  }
+}
+
+.yj-thinking-dots span {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin: 0 2px;
+  border-radius: 50%;
+  background-color: var(--yj-text-muted);
+  animation: yj-dot-bounce 1.2s ease-in-out infinite;
+}
+.yj-thinking-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.yj-thinking-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Smooth expand/collapse for thinking panel */
+@keyframes yj-expand {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 8rem;
+  }
+}
+
+.yj-expand-enter {
+  animation: yj-expand 0.25s ease-out both;
+  overflow: hidden;
+}
+
+/* Card slide-up entrance */
+@keyframes yj-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.yj-card-enter {
+  animation: yj-slide-up 0.4s ease-out both;
+}
+.yj-card-enter-delay {
+  animation: yj-slide-up 0.4s ease-out 0.15s both;
+}

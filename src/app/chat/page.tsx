@@ -259,11 +259,16 @@ export default function ChatPage() {
 
         {/* Initial loading (no messages yet) */}
         {isLoading && messages.length === 0 && (
-          <div className="flex justify-start mb-4">
+          <div className="flex justify-start mb-4 yj-msg-enter">
             <div className="bg-[var(--yj-bg-secondary)] border border-[var(--yj-border)] rounded-[4px_20px_20px_20px] px-5 py-4 shadow-[var(--yj-shadow-sm)]">
-              <span className="text-sm text-[var(--yj-text-muted)] animate-pulse">
-                正在思考...
-              </span>
+              <div className="flex items-center gap-2">
+                <div className="yj-thinking-dots">
+                  <span /><span /><span />
+                </div>
+                <span className="text-xs text-[var(--yj-text-muted)]">
+                  思考中
+                </span>
+              </div>
             </div>
           </div>
         )}
@@ -271,11 +276,15 @@ export default function ChatPage() {
         {/* Scoring UI */}
         {showScoring && !scored && checkInData && (
           <div className="space-y-4 mt-6">
-            <MoodScoreSlider
-              suggestedScore={checkInData.score}
-              onConfirm={handleScoreConfirm}
-            />
-            <MicroActionCard action={checkInData.action} />
+            <div className="yj-card-enter">
+              <MoodScoreSlider
+                suggestedScore={checkInData.score}
+                onConfirm={handleScoreConfirm}
+              />
+            </div>
+            <div className="yj-card-enter-delay">
+              <MicroActionCard action={checkInData.action} />
+            </div>
           </div>
         )}
 
